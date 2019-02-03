@@ -1,10 +1,16 @@
 package com.example.marik.urlslist.data
 
+import android.app.Dialog
 import android.arch.lifecycle.LiveData
 import android.content.Context
+import android.content.DialogInterface
+import android.os.Bundle
+import android.support.v4.app.DialogFragment
+import android.support.v7.app.AlertDialog
 import android.widget.Toast
-import com.example.marik.urlslist.model.ItemUrl
 import com.example.marik.urlslist.NetManager
+import com.example.marik.urlslist.R
+import com.example.marik.urlslist.model.ItemUrl
 
 /**
  *  Repository class used as a single source of data
@@ -24,7 +30,7 @@ class UrlsRepository(
         localDataSource.insert(itemUrl) {}
 
         if (netManager.isConnectedToInternet) {
-            if (!isRequestInProgress) return
+            if (isRequestInProgress) return
 
             isRequestInProgress = true
             localDataSource.insert(remoteDataSource.checkSingleUrl(itemUrl)) { isRequestInProgress = false }
@@ -36,7 +42,12 @@ class UrlsRepository(
      */
     fun refreshAll() {
         if (netManager.isConnectedToInternet) {
-            if (!isRequestInProgress) return
+            if (isRequestInProgress) {
+                val oldList: List<ItemUrl> = localDataSource.getList()
+                localDataSource.updateAll(oldList.apply { forEach { item: ItemUrl -> item.isAvailable = null } })
+                { Toast.makeText(context, "Request for URLs list is in progress!", Toast.LENGTH_LONG).show() }
+                return
+            }
 
             isRequestInProgress = true
             localDataSource.updateAll(remoteDataSource.checkUrlsList(localDataSource.getList()))
@@ -65,9 +76,39 @@ class UrlsRepository(
 
     // Delete item
     fun deleteItem(itemUrl: ItemUrl) {
-        // TODO chishty stex Dialog sarqeln a
-        if(isRequestInProgress) Toast.makeText(context, "Request for this URL is in progress!", Toast.LENGTH_LONG).show()
+        if (isRequestInProgress) {
+            val dialog = DeletionDialog()
+            if (dialog.isDeletable) {
+                localDataSource.delete(itemUrl)
+                return
+            } else return
+        }
+
         localDataSource.delete(itemUrl)
+    }
+
+    internal class DeletionDialog : DialogFragment() {
+        var isDeletable: Boolean = true
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            return activity?.let {
+                // Use the Builder class for convenient dialog construction
+                val builder = AlertDialog.Builder(it)
+                builder.setMessage(getString(R.string.dialog_message))
+                    .setPositiveButton(
+                        R.string.delete
+                    ) { dialog, id ->
+                        isDeletable = true
+                    }
+                    .setNegativeButton(
+                        R.string.cancel
+                    ) { dialog, id ->
+                        // User cancelled the dialog
+                        isDeletable = false
+                    }
+                // Create the AlertDialog object and return it
+                builder.create()
+            } ?: throw IllegalStateException("Activity cannot be null")
+        }
     }
 
 }

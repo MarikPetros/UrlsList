@@ -1,6 +1,5 @@
 package com.example.marik.urlslist.data
 
-import android.arch.lifecycle.LiveData
 import com.example.marik.urlslist.model.ItemUrl
 import com.example.marik.urlslist.model.UrlsDao
 import java.util.concurrent.Executor

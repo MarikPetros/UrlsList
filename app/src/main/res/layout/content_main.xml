@@ -27,7 +27,7 @@
                 android:background="@color/colorPrimary"
                 android:elevation="@dimen/button_elevation"
                 android:layout_margin="@dimen/view_margin"
-                android:onClick="@{() -> viewModel.refreshAll()}"
+                android:onClick="@{ () -> viewModel.refreshAll()}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -46,9 +46,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintVertical_bias="0.1"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    android:visibility="gone"
                     android:layout_margin="@dimen/view_margin"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="0dp"/>
 
             <TextView
                     android:id="@+id/emptyList"
@@ -57,7 +59,7 @@
                     android:gravity="center"
                     android:text="@string/no_items"
                     android:textSize="@dimen/view_text_medium"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintVertical_bias="0.45"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -65,18 +67,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
 
-            <ProgressBar
-                    android:id="@+id/progress_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:gravity="center"
-                    app:layout_constraintVertical_bias="0.45"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 </layout>

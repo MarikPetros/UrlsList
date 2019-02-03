@@ -1,13 +1,17 @@
 package com.example.marik.urlslist.ui
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.example.marik.urlslist.Injector
+import com.example.marik.urlslist.R
 import com.example.marik.urlslist.databinding.ContentMainBinding
+import com.example.marik.urlslist.model.ItemUrl
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -29,11 +33,34 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProviders.of(this, Injector.provideViewModelFactory(this))
             .get(UrlsListViewModel::class.java)
+        binding.viewModel = viewModel
+
+        setRecyclerView()
 
         fab.setOnClickListener {
-            /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()*/
             AddFragment.newInstance()
+        }
+    }
+
+    private fun setRecyclerView() {
+
+        viewModel.urlsList.observe(this, Observer<List<ItemUrl>> { list ->
+            list?.let {
+                showEmptyList(it.isEmpty())
+                adapter = UrlsListAdapter(it)
+            }
+        })
+
+        binding.recyclerView.apply { this.adapter = adapter }
+    }
+
+    private fun showEmptyList(show: Boolean) {
+        if (show) {
+            binding.emptyList.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.GONE
+        } else {
+            binding.emptyList.visibility = View.GONE
+            binding.recyclerView.visibility = View.VISIBLE
         }
     }
 
