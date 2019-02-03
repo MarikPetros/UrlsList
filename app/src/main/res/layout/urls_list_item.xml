@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+                name="itemUrl"
+                type="com.example.marik.urlslist.model.ItemUrl"/>
+
+        <variable
+                name="viewModel"
+                type="com.example.marik.urlslist.ui.UrlsListViewModel"/>
+    </data>
+
+    <android.support.v7.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
+
+        <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/view_padding"
+                android:background="@android:color/white">
+
+            <ImageView
+                    android:id="@+id/action_url_remove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:tint="@color/colorPrimary"
+                    android:visibility="gone"
+                    android:onClick="@{() -> viewModel.deleteItem(itemUrl)}"
+                    android:contentDescription="@string/delete_url"
+                    android:src="@android:drawable/ic_delete"/>
+
+            <TextView
+                    android:id="@+id/text_url"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@id/url_state"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_margin="@dimen/view_margin"
+                    android:padding="@dimen/view_padding"
+                    android:textSize="@dimen/view_text_medium"
+                    android:text="@{itemUrl.name}"
+                    tools:text="www.google.com"
+            />
+
+            <ImageView
+                    android:id="@+id/url_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/uri_availability_state"
+                    android:src="@{itemUrl.isAvailable == null ? @drawable/state_loading : itemUrl.isAvailable ? @drawable/url_available : @drawable/url_unavailable}"
+            />
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+</layout>

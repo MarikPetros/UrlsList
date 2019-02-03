@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+                name="viewModel"
+                type="com.example.marik.urlslist.ui.UrlsListViewModel"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/add_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.AddFragment">
+
+
+        <EditText
+                android:id="@+id/url_text_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="@string/adding_url_hint"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.07"
+                android:layout_margin="@dimen/view_margin"
+                android:inputType="textUri|textAutoComplete"
+                android:padding="@dimen/view_padding"
+                tools:text="Google.com"
+                android:hint="@string/adding_url_hint"/>
+
+        <ImageView
+                android:id="@+id/image_add"
+                android:src="@android:drawable/ic_input_add"
+                android:layout_margin="@dimen/view_margin"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.2"
+                app:layout_constraintHorizontal_bias="0.9"
+                android:contentDescription="@string/plus_item_image"
+                android:padding="@dimen/view_padding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>
