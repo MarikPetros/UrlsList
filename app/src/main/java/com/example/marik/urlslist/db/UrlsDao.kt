@@ -33,7 +33,7 @@ interface UrlsDao {
 
     //Searching for some url
     @Query("SELECT * FROM itemurl WHERE name LIKE :urlName")
-    fun findByName(urlName: String): LiveData<List<ItemUrl>>
+    fun findByName(urlName: String): List<ItemUrl>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

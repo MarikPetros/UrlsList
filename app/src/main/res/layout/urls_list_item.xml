@@ -61,7 +61,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:contentDescription="@string/uri_availability_state"
-                    android:src="@{itemUrl.isAvailable == null ? @drawable/state_loading : itemUrl.isAvailable ? @drawable/url_available : @drawable/url_unavailable}"
+                    android:src="@{itemUrl.isAvailable == null ? @drawable/state_loading : itemUrl.isAvailable == true ? @drawable/url_available : @drawable/url_unavailable}"
             />
         </android.support.constraint.ConstraintLayout>
 

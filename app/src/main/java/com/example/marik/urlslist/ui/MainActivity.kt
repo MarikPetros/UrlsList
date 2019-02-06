@@ -1,7 +1,10 @@
 package com.example.marik.urlslist.ui
 
+import android.app.SearchManager
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
+import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -21,9 +24,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setSupportActionBar(toolbar)
+//        setSupportActionBar(toolbar)
 
         init()
+        handleIntent(intent)
     }
 
     private fun init() {
@@ -54,6 +58,31 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.apply { this.adapter = adapter }
     }
 
+    override fun onNewIntent(intent: Intent) {
+        setIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+        if (Intent.ACTION_SEARCH == intent.action) {
+            intent.getStringExtra(SearchManager.QUERY)?.also { query ->
+                doMySearch(query)
+            }
+        }
+    }
+
+    private fun doMySearch(query: String) {
+        val results = viewModel.searchUrl(query)
+        adapter = UrlsListAdapter(results)
+        /* val urlAddressList = arrayOfNulls<String>(results.size)
+         for (i in 0 until results.size){
+             urlAddressList[i] = results[i].name
+         }
+
+         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, urlAddressList)*/
+    }
+
+
     private fun showEmptyList(show: Boolean) {
         if (show) {
             binding.emptyList.visibility = View.VISIBLE
@@ -71,9 +100,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
+        /*// Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // as you specify a parent activity in AndroidManifest.xml.*/
         // Handle item selection
         return when (item.itemId) {
             R.id.search -> {
@@ -82,25 +111,49 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.sortByNameAsc -> {
                 viewModel.getByNameAsc()// hop! kayni! viewModelic stacacy pti
+                saveSortState(NAMES_ASC)
                 true
             }
             R.id.sortByNameDesc -> {
                 viewModel.getByNameDesc()
+                saveSortState(NAMES_DESC)
                 true
             }
             R.id.sortByAvailability -> {
                 viewModel.getAllByAvailability()
+                saveSortState(AVAILABILITY)
                 true
             }
             R.id.sortByResponseTimeAsc -> {
                 viewModel.getByResponseTimeAsc()
+                saveSortState(RESPONSE_TIME_ASC)
                 true
             }
             R.id.sortByResponseTimeDesc -> {
                 viewModel.getByResponseTimeDesc()
+                saveSortState(RESPONSE_TIME_DESC)
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun saveSortState(sortType: String) {
+        val sPref: SharedPreferences = getSharedPreferences(SAVED_SORT_TYPE, MODE_PRIVATE)
+        val editor = sPref.edit()
+        editor.putString(SAVED_SORT_TYPE, sortType)
+        editor.apply()
+    }
+
+    companion object {
+        // Preference key
+        const val SAVED_SORT_TYPE = "Saved type of list sorting"
+
+        // Preference possible values
+        const val NAMES_ASC = "sorting"
+        const val NAMES_DESC = "Saved type of list sorting"
+        const val AVAILABILITY = "Saved type of list sorting"
+        const val RESPONSE_TIME_ASC = "Saved type of list sorting"
+        const val RESPONSE_TIME_DESC = "Saved type of list sorting"
     }
 }

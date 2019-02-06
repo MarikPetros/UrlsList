@@ -2,10 +2,10 @@ package com.example.marik.urlslist
 
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
-import com.example.marik.urlslist.model.UrlsDatabase
 import com.example.marik.urlslist.data.UrlsLocalRepository
 import com.example.marik.urlslist.data.UrlsRemoteRepository
 import com.example.marik.urlslist.data.UrlsRepository
+import com.example.marik.urlslist.model.UrlsDatabase
 import com.example.marik.urlslist.ui.ViewModelFactory
 import java.util.concurrent.Executors
 

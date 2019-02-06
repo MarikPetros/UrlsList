@@ -6,8 +6,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.marik.urlslist.model.ItemUrl
 import com.example.marik.urlslist.databinding.UrlsListItemBinding
+import com.example.marik.urlslist.model.ItemUrl
 
 /**
  *  View holder for a [ItemUrl] RecyclerView list item

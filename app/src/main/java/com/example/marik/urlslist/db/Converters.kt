@@ -1,10 +1,9 @@
 package com.example.marik.urlslist.db
 
 import android.arch.persistence.room.TypeConverter
+import java.util.*
 
-import java.util.UUID
-
-object Converters {
+class Converters {
 
     @TypeConverter
     fun toUUID(value: String?): UUID? {

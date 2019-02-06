@@ -1,9 +1,7 @@
 package com.example.marik.urlslist.data
 
 import android.app.Dialog
-import android.arch.lifecycle.LiveData
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
@@ -17,10 +15,10 @@ import com.example.marik.urlslist.model.ItemUrl
  */
 class UrlsRepository(
     val context: Context,
-    val localDataSource: UrlsLocalRepository,
-    val remoteDataSource: UrlsRemoteRepository
+    private val localDataSource: UrlsLocalRepository,
+    private val remoteDataSource: UrlsRemoteRepository
 ) {
-    val netManager = NetManager(context)
+    private val netManager = NetManager(context)
 
     // avoid triggering multiple requests in the same time
     private var isRequestInProgress = false
@@ -58,7 +56,7 @@ class UrlsRepository(
     /**
      *  Function for searching the list for URl
      */
-    fun searchUrl(string: String): LiveData<List<ItemUrl>> = localDataSource.findByName(string)
+    fun searchUrl(string: String): List<ItemUrl> = localDataSource.findByName(string)
 
     //Function for getting the list of all items
     fun getAll() = localDataSource.getAll()
@@ -96,12 +94,12 @@ class UrlsRepository(
                 builder.setMessage(getString(R.string.dialog_message))
                     .setPositiveButton(
                         R.string.delete
-                    ) { dialog, id ->
+                    ) { _, _ ->
                         isDeletable = true
                     }
                     .setNegativeButton(
                         R.string.cancel
-                    ) { dialog, id ->
+                    ) { _, _ ->
                         // User cancelled the dialog
                         isDeletable = false
                     }
