@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         setRecyclerView()
 
+        val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener {
             AddFragment.newInstance()
         }

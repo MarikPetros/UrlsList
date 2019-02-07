@@ -7,6 +7,7 @@ import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.http.HEAD
 import retrofit2.http.Path
+import retrofit2.http.Url
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -33,18 +34,19 @@ fun checkUrl(service: UrlAvailabilityService, queryString: String,
  *  Service class for checking url's availability
  */
 interface UrlAvailabilityService {
-    @HEAD("{url}")
-    fun getResponse(@Path("url") url: String): retrofit2.Call<*>
+    @HEAD
+    fun getResponse(@Url url: String): retrofit2.Call<*>
 
     companion object {
         fun create(): UrlAvailabilityService{
             val interceptor = LoggingInterceptor()
 
-            val client = OkHttpClient.Builder() // ete senc chashxati, okHttp-in ktanq urly
+            val client = OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .build()
             return Retrofit.Builder()
+                .baseUrl("http://host/path/")
                 .client(client)
                 .build()
                 .create(UrlAvailabilityService::class.java)
