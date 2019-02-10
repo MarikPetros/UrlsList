@@ -43,7 +43,7 @@ class AddFragment : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        image_add.setOnClickListener { onPlusClick() }
+       binding.imageAdd.setOnClickListener { onPlusClick() }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -60,7 +60,7 @@ class AddFragment : BottomSheetDialogFragment() {
     }
 
     private fun query(): String {
-        val inputString = url_text_input.toString()
+        val inputString =binding.urlTextInput.toString()
         val prefix = "http://"
         return if (inputString.contains(prefix, true)) inputString else prefix + inputString
     }

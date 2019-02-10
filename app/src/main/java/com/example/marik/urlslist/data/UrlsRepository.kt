@@ -1,6 +1,7 @@
 package com.example.marik.urlslist.data
 
 import android.app.Dialog
+import android.arch.lifecycle.LiveData
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
@@ -59,18 +60,18 @@ class UrlsRepository(
     fun searchUrl(string: String): List<ItemUrl> = localDataSource.findByName(string)
 
     //Function for getting the list of all items
-    fun getAll() = localDataSource.getAll()
+    fun getAll(): LiveData<List<ItemUrl>> = localDataSource.getAll()
 
     // Functions for getting all items ordered by some criteria
-    fun getAllByAvailability() = localDataSource.getAllByAvailability()
+    fun getAllByAvailability(): LiveData<List<ItemUrl>> = localDataSource.getAllByAvailability()
 
-    fun getByNameAsc() = localDataSource.getByNameAsc()
+    fun getByNameAsc(): LiveData<List<ItemUrl>> = localDataSource.getByNameAsc()
 
-    fun getByNameDesc() = localDataSource.getByNameDesc()
+    fun getByNameDesc(): LiveData<List<ItemUrl>> = localDataSource.getByNameDesc()
 
-    fun getByResponseTimeAsc() = localDataSource.getByResponseTimeAsc()
+    fun getByResponseTimeAsc(): LiveData<List<ItemUrl>> = localDataSource.getByResponseTimeAsc()
 
-    fun getByResponseTimeDesc() = localDataSource.getByResponseTimeDesc()
+    fun getByResponseTimeDesc(): LiveData<List<ItemUrl>> = localDataSource.getByResponseTimeDesc()
 
     // Delete item
     fun deleteItem(itemUrl: ItemUrl) {

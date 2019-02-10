@@ -20,6 +20,7 @@ class UrlsListViewModel(val repository: UrlsRepository) : ViewModel() {
     // add single url
     fun addUrl(itemUrl: ItemUrl) {
         repository.addItem(itemUrl)
+        getAll()
     }
 
     // refresh all items
@@ -46,7 +47,7 @@ class UrlsListViewModel(val repository: UrlsRepository) : ViewModel() {
     fun searchUrl(string: String): List<ItemUrl> = repository.searchUrl(string)
 
     // functions to achieve all items
-    fun getAll() {
+    private fun getAll() {
         urlsList = repository.getAll()
     }
 

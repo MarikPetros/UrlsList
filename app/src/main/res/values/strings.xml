@@ -19,4 +19,5 @@
     <string name="time_desc">Sort by response time descending</string>
     <string name="placeholder_text">Google.com</string>
     <string name="dialog_message">Request for this URL is in progress!</string>
+    <string name="fragment_tag">Add url</string>
 </resources>

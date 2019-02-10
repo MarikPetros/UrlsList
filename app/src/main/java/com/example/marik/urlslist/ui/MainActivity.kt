@@ -7,24 +7,23 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.example.marik.urlslist.Injector
 import com.example.marik.urlslist.R
-import com.example.marik.urlslist.databinding.ContentMainBinding
+import com.example.marik.urlslist.databinding.ActivityMainBinding
 import com.example.marik.urlslist.model.ItemUrl
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding: ContentMainBinding
+    private lateinit var binding: ActivityMainBinding
     lateinit var viewModel: UrlsListViewModel
-    lateinit var adapter: UrlsListAdapter
+    private var urlsAdapter: UrlsListAdapter = UrlsListAdapter(listOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 //        setSupportActionBar(toolbar)
 
         init()
@@ -33,18 +32,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun init() {
 
-        binding = DataBindingUtil.setContentView(this, R.layout.content_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.executePendingBindings()
 
         viewModel = ViewModelProviders.of(this, Injector.provideViewModelFactory(this))
             .get(UrlsListViewModel::class.java)
-        binding.viewModel = viewModel
+        binding.mainContent.viewModel = viewModel
 
         setRecyclerView()
 
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener {
-            AddFragment.newInstance()
+        binding.fab.setOnClickListener {
+            AddFragment.newInstance().show(supportFragmentManager, getString(R.string.fragment_tag))
         }
     }
 
@@ -52,12 +50,11 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.urlsList.observe(this, Observer<List<ItemUrl>> { list ->
             list?.let {
-                showEmptyList(it.isEmpty())
-                adapter = UrlsListAdapter(it)
-            }
+                urlsAdapter = UrlsListAdapter(it)
+            } ?: showEmptyList(true)
         })
 
-        binding.recyclerView.apply { this.adapter = adapter }
+        binding.mainContent.recyclerView.apply { this.adapter = urlsAdapter }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -75,23 +72,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun doMySearch(query: String) {
         val results = viewModel.searchUrl(query)
-        adapter = UrlsListAdapter(results)
-        /* val urlAddressList = arrayOfNulls<String>(results.size)
-         for (i in 0 until results.size){
-             urlAddressList[i] = results[i].name
-         }
-
-         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, urlAddressList)*/
+        urlsAdapter = UrlsListAdapter(results)
     }
 
 
     private fun showEmptyList(show: Boolean) {
         if (show) {
-            binding.emptyList.visibility = View.VISIBLE
-            binding.recyclerView.visibility = View.GONE
+            binding.mainContent.emptyList.visibility = View.VISIBLE
+            binding.mainContent.recyclerView.visibility = View.GONE
         } else {
-            binding.emptyList.visibility = View.GONE
-            binding.recyclerView.visibility = View.VISIBLE
+            binding.mainContent.emptyList.visibility = View.GONE
+            binding.mainContent.recyclerView.visibility = View.VISIBLE
         }
     }
 
@@ -152,10 +143,10 @@ class MainActivity : AppCompatActivity() {
         const val SAVED_SORT_TYPE = "Saved type of list sorting"
 
         // Preference possible values
-        const val NAMES_ASC = "sorting"
-        const val NAMES_DESC = "Saved type of list sorting"
-        const val AVAILABILITY = "Saved type of list sorting"
-        const val RESPONSE_TIME_ASC = "Saved type of list sorting"
-        const val RESPONSE_TIME_DESC = "Saved type of list sorting"
+        const val NAMES_ASC = "Sorting by name ascending order"
+        const val NAMES_DESC = "Sorting by name descending order"
+        const val AVAILABILITY = "Sorting by availability order"
+        const val RESPONSE_TIME_ASC = "Sorting by response time ascending order"
+        const val RESPONSE_TIME_DESC = "Sorting by response time descending order"
     }
 }
