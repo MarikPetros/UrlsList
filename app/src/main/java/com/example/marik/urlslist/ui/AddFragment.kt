@@ -8,13 +8,13 @@ import android.support.design.widget.BottomSheetDialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageView
 import com.example.marik.urlslist.Injector
-import com.example.marik.urlslist.databinding.AddFragmentBinding
+import com.example.marik.urlslist.R
 import com.example.marik.urlslist.model.ItemUrl
-import kotlinx.android.synthetic.main.add_fragment.*
 
 class AddFragment : BottomSheetDialogFragment() {
-    private lateinit var binding: AddFragmentBinding
 
     private val mBottomSheetBehaviorCallback = object : BottomSheetBehavior.BottomSheetCallback() {
 
@@ -33,24 +33,28 @@ class AddFragment : BottomSheetDialogFragment() {
     }
 
     private lateinit var viewModel: UrlsListViewModel
+    private lateinit var imgPlus: ImageView
+    private lateinit var inputText: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = AddFragmentBinding.inflate(inflater, container,false)
-        return binding.root
+        return inflater.inflate(R.layout.add_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-       binding.imageAdd.setOnClickListener { onPlusClick() }
+        inputText = view.findViewById(R.id.url_text_input)
+        imgPlus = view.findViewById(R.id.image_add)
+        imgPlus.setOnClickListener { onPlusClick() }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel =
             ViewModelProviders.of(this, Injector.provideViewModelFactory(requireContext())).get(
-                UrlsListViewModel::class.java)
+                UrlsListViewModel::class.java
+            )
     }
 
     // add url and dismiss
@@ -60,7 +64,7 @@ class AddFragment : BottomSheetDialogFragment() {
     }
 
     private fun query(): String {
-        val inputString =binding.urlTextInput.toString()
+        val inputString = inputText.text.toString()
         val prefix = "http://"
         return if (inputString.contains(prefix, true)) inputString else prefix + inputString
     }
