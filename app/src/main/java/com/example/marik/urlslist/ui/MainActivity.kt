@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setRecyclerView() {
-        binding.recyclerView.adapter = urlsAdapter
         viewModel.urlsList.observe(this, Observer<List<ItemUrl>> {
             showEmptyList(it?.size == 0)
             run {
@@ -55,6 +54,7 @@ class MainActivity : AppCompatActivity() {
                 urlsAdapter.notifyDataSetChanged()
             }
         })
+        binding.recyclerView.adapter = urlsAdapter
     }
 
     private fun showEmptyList(show: Boolean) {
@@ -90,6 +90,7 @@ class MainActivity : AppCompatActivity() {
     private val mOnItemDeleteListener = object : UrlsListAdapter.OnItemDeleteListener {
         override fun onItemDelete(item: ItemUrl) {
             viewModel.deleteItem(item)
+            urlsAdapter.notifyDataSetChanged()
         }
     }
 

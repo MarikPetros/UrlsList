@@ -9,7 +9,7 @@ import com.example.marik.urlslist.model.ItemUrl
  *  Adapter for urls list
  */
 class UrlsListAdapter : RecyclerView.Adapter<UrlViewHolder>() {
-    private lateinit var items: List<ItemUrl>
+    private var items: List<ItemUrl> = listOf()
 
     lateinit var mOnItemDeleteListener: OnItemDeleteListener
 

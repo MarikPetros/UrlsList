@@ -1,6 +1,7 @@
 package com.example.marik.urlslist.ui
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
@@ -15,12 +16,12 @@ import com.example.marik.urlslist.ui.MainActivity.Companion.SAVED_SORT_TYPE
 
 class UrlsListViewModel(private val repository: UrlsRepository) : ViewModel() {
 
-    var urlsList: LiveData<List<ItemUrl>> = repository.getAll()
+    var urlsList: LiveData<List<ItemUrl>> = MutableLiveData<List<ItemUrl>>()
 
     // add single url
     fun addUrl(itemUrl: ItemUrl) {
         repository.addItem(itemUrl)
-      //  urlsList = repository.getAll()
+        urlsList = repository.getAll()
     }
 
     // refresh all items
