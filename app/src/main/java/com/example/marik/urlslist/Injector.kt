@@ -28,7 +28,7 @@ object Injector {
 
     /**
      * Provides the [ViewModelProvider.Factory] that is then used to get a reference to
-     * [UrlsListViewModel] objects.
+     * ViewModel objects.
      */
     fun provideViewModelFactory(context: Context): ViewModelProvider.Factory {
         return ViewModelFactory(provideUrlsRepository(context))
