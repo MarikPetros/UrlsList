@@ -86,7 +86,7 @@ class UrlsLocalRepository(
     fun getByResponseTimeDesc(): LiveData<List<ItemUrl>> = getAllAsLiveData { urlsDao.loadAllByResponseTimeDesc() }
 
     /**
-     *  get search result from the database by name as LiveData<List<ItemUrl>>
+     *  get search result from the database by name as List<ItemUrl>
      */
     fun findByName(urlName: String): List<ItemUrl> = getAllItems { urlsDao.findByName(urlName) }
 

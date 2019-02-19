@@ -19,24 +19,25 @@ import com.example.marik.urlslist.model.ItemUrl
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var viewModel: UrlsListViewModel
-    private var urlsAdapter: UrlsListAdapter = UrlsListAdapter(listOf())
+    private var urlsAdapter: UrlsListAdapter = UrlsListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setSupportActionBar(toolbar)
 
         init()
         handleIntent(intent)
     }
 
     private fun init() {
-
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.activity_main, null, false)
+        setContentView(binding.root)
         binding.executePendingBindings()
 
         viewModel = ViewModelProviders.of(this, Injector.provideViewModelFactory(this))
             .get(UrlsListViewModel::class.java)
-        binding.mainContent.viewModel = viewModel
+        binding.viewModel = viewModel
+
+        urlsAdapter.setOnItemDeleteListener(mOnItemDeleteListener)
 
         setRecyclerView()
 
@@ -46,14 +47,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setRecyclerView() {
-
-        viewModel.urlsList.observe(this, Observer<List<ItemUrl>> { list ->
-            list?.let {
-                urlsAdapter = UrlsListAdapter(it)
-            } ?: showEmptyList(true)
+        binding.recyclerView.adapter = urlsAdapter
+        viewModel.urlsList.observe(this, Observer<List<ItemUrl>> {
+            showEmptyList(it?.size == 0)
+            run {
+                urlsAdapter.setList(it!!)
+                urlsAdapter.notifyDataSetChanged()
+            }
         })
+    }
 
-        binding.mainContent.recyclerView.apply { this.adapter = urlsAdapter }
+    private fun showEmptyList(show: Boolean) {
+        if (show) {
+            binding.emptyList.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.GONE
+        } else {
+            binding.emptyList.visibility = View.GONE
+            binding.recyclerView.visibility = View.VISIBLE
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -71,17 +82,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun doMySearch(query: String) {
         val results = viewModel.searchUrl(query)
-        urlsAdapter = UrlsListAdapter(results)
+        urlsAdapter.setList(results)
+        urlsAdapter.notifyDataSetChanged()
+        showEmptyList(results.isEmpty())
     }
 
-
-    private fun showEmptyList(show: Boolean) {
-        if (show) {
-            binding.mainContent.emptyList.visibility = View.VISIBLE
-            binding.mainContent.recyclerView.visibility = View.GONE
-        } else {
-            binding.mainContent.emptyList.visibility = View.GONE
-            binding.mainContent.recyclerView.visibility = View.VISIBLE
+    private val mOnItemDeleteListener = object : UrlsListAdapter.OnItemDeleteListener {
+        override fun onItemDelete(item: ItemUrl) {
+            viewModel.deleteItem(item)
         }
     }
 
@@ -102,7 +110,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.sortByNameAsc -> {
-                viewModel.getByNameAsc()// hop! kayni! viewModelic stacacy pti
+                viewModel.getByNameAsc()
                 saveSortState(NAMES_ASC)
                 true
             }

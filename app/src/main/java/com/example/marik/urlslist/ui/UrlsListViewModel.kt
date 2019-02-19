@@ -13,14 +13,14 @@ import com.example.marik.urlslist.ui.MainActivity.Companion.RESPONSE_TIME_ASC
 import com.example.marik.urlslist.ui.MainActivity.Companion.RESPONSE_TIME_DESC
 import com.example.marik.urlslist.ui.MainActivity.Companion.SAVED_SORT_TYPE
 
-class UrlsListViewModel(val repository: UrlsRepository) : ViewModel() {
+class UrlsListViewModel(private val repository: UrlsRepository) : ViewModel() {
 
     var urlsList: LiveData<List<ItemUrl>> = repository.getAll()
 
     // add single url
     fun addUrl(itemUrl: ItemUrl) {
         repository.addItem(itemUrl)
-        getAll()
+      //  urlsList = repository.getAll()
     }
 
     // refresh all items
@@ -46,10 +46,6 @@ class UrlsListViewModel(val repository: UrlsRepository) : ViewModel() {
     // search for an url
     fun searchUrl(string: String): List<ItemUrl> = repository.searchUrl(string)
 
-    // functions to achieve all items
-    private fun getAll() {
-        urlsList = repository.getAll()
-    }
 
     fun getAllByAvailability() {
         urlsList = repository.getAllByAvailability()

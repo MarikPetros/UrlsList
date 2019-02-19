@@ -22,7 +22,7 @@ object UrlsRemoteRepository {
         executor.submit {
             synchronized(service) {
                 checkUrl(service, itemUrl.name)
-                { result ->
+                { result -> // stex default resultn a galis?? ardyoq aydpes piti lini ?????? het a gnum checkUrl u nuyn vichakum galis a
                     itemUrl.isAvailable = result.isAvailable
                     itemUrl.responseTime = result.responseTime
                 }

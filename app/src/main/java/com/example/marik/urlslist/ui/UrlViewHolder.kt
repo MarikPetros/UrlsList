@@ -13,6 +13,11 @@ import com.example.marik.urlslist.model.ItemUrl
  *  View holder for a [ItemUrl] RecyclerView list item
  */
 class UrlViewHolder(private var binding: UrlsListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    private lateinit var mOnDeleteListener: OnDeleteListener
+
+    fun setOnDeleteListener(listener: OnDeleteListener) {
+        mOnDeleteListener = listener
+    }
 
     init {
         // open the site with the url
@@ -25,20 +30,28 @@ class UrlViewHolder(private var binding: UrlsListItemBinding) : RecyclerView.Vie
 
         // make "delete" image visible on long click
         binding.root.setOnLongClickListener {
-            if (binding.actionUrlRemove.visibility != (View.VISIBLE)) {
+            if (binding.actionUrlRemove.visibility != View.VISIBLE) {
                 binding.actionUrlRemove.visibility = View.VISIBLE
-            }else binding.actionUrlRemove.visibility = ( View.GONE)
+            } else binding.actionUrlRemove.visibility = View.GONE
 
             true
         }
+
+        binding.actionUrlRemove.setOnClickListener { mOnDeleteListener.delete(adapterPosition) }
     }
 
-    fun bind(item: ItemUrl){
+    fun bind(item: ItemUrl) {
         binding.itemUrl = item
+        binding.executePendingBindings()
+
+    }
+
+    interface OnDeleteListener {
+        fun delete(adapterPosition: Int)
     }
 
     companion object {
-        fun create(parent: ViewGroup): UrlViewHolder{
+        fun create(parent: ViewGroup): UrlViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val binding = UrlsListItemBinding.inflate(layoutInflater, parent, false)
             return UrlViewHolder(binding)

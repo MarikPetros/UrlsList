@@ -4,7 +4,7 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import java.util.*
 
-@Entity
+@Entity(tableName = "itemurl")
 data class ItemUrl(
     val name: String,
     @PrimaryKey val id: UUID = UUID.randomUUID(),

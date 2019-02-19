@@ -5,8 +5,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import retrofit2.Retrofit
-import retrofit2.http.HEAD
-import retrofit2.http.Path
+import retrofit2.http.GET
 import retrofit2.http.Url
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -34,7 +33,7 @@ fun checkUrl(service: UrlAvailabilityService, queryString: String,
  *  Service class for checking url's availability
  */
 interface UrlAvailabilityService {
-    @HEAD
+    @GET
     fun getResponse(@Url url: String): retrofit2.Call<*>
 
     companion object {

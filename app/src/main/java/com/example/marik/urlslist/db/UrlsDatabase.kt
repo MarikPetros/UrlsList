@@ -1,13 +1,14 @@
-package com.example.marik.urlslist.model
+package com.example.marik.urlslist.db
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 import android.content.Context
-import com.example.marik.urlslist.db.Converters
+import com.example.marik.urlslist.model.ItemUrl
+import com.example.marik.urlslist.model.UrlsDao
 
-@Database(entities = [ItemUrl::class], version = 2, exportSchema = false)
+@Database(entities = [ItemUrl::class], version = 3, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class UrlsDatabase : RoomDatabase() {
 
@@ -28,6 +29,7 @@ abstract class UrlsDatabase : RoomDatabase() {
             Room.databaseBuilder(
                 context.applicationContext,
                 UrlsDatabase::class.java, "Urls.db")
+                .fallbackToDestructiveMigration()
                 .build()
 
     }
