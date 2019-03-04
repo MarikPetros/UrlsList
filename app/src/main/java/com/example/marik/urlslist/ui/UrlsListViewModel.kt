@@ -16,7 +16,7 @@ import com.example.marik.urlslist.ui.MainActivity.Companion.SAVED_SORT_TYPE
 
 class UrlsListViewModel(private val repository: UrlsRepository) : ViewModel() {
 
-    var urlsList: LiveData<List<ItemUrl>> = MutableLiveData<List<ItemUrl>>()
+    var urlsList: LiveData<MutableList<ItemUrl>> = MutableLiveData<MutableList<ItemUrl>>()
 
     // add single url
     fun addUrl(itemUrl: ItemUrl) {
@@ -45,7 +45,7 @@ class UrlsListViewModel(private val repository: UrlsRepository) : ViewModel() {
     }
 
     // search for an url
-    fun searchUrl(string: String): List<ItemUrl> = repository.searchUrl(string)
+    fun searchUrl(string: String): MutableList<ItemUrl> = repository.searchUrl(string)
 
 
     fun getAllByAvailability() {

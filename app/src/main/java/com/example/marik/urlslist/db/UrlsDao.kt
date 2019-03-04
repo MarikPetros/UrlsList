@@ -9,31 +9,31 @@ import android.arch.persistence.room.*
 @Dao
 interface UrlsDao {
     @Query("SELECT * FROM itemurl")
-    fun getAll(): LiveData<List<ItemUrl>>
+    fun getAll(): LiveData<MutableList<ItemUrl>>
 
     @Query("SELECT * FROM itemurl")
-    fun getList(): List<ItemUrl>
+    fun getList(): MutableList<ItemUrl>
 
     //Sorting selection methods
     @Query("SELECT * FROM itemurl ORDER BY name ASC")
-    fun loadAllByNameAsc(): LiveData<List<ItemUrl>>
+    fun loadAllByNameAsc(): LiveData<MutableList<ItemUrl>>
 
     @Query("SELECT * FROM itemurl ORDER BY name DESC")
-    fun loadAllByNameDesc(): LiveData<List<ItemUrl>>
+    fun loadAllByNameDesc(): LiveData<MutableList<ItemUrl>>
 
     @Query("SELECT * FROM itemurl ORDER BY isAvailable DESC")
-    fun loadAllByAvailability(): LiveData<List<ItemUrl>>
+    fun loadAllByAvailability(): LiveData<MutableList<ItemUrl>>
 
     @Query("SELECT * FROM itemurl ORDER BY responseTime ASC")
-    fun loadAllByResponseTimeAsc(): LiveData<List<ItemUrl>>
+    fun loadAllByResponseTimeAsc(): LiveData<MutableList<ItemUrl>>
 
     @Query("SELECT * FROM itemurl ORDER BY responseTime DESC")
-    fun loadAllByResponseTimeDesc(): LiveData<List<ItemUrl>>
+    fun loadAllByResponseTimeDesc(): LiveData<MutableList<ItemUrl>>
 
 
     //Searching for some url
     @Query("SELECT * FROM itemurl WHERE name LIKE :urlName")
-    fun findByName(urlName: String): List<ItemUrl>
+    fun findByName(urlName: String): MutableList<ItemUrl>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -44,7 +44,7 @@ interface UrlsDao {
 
     // Update all
     @Update
-    fun updateAll(newList: List<ItemUrl>)
+    fun updateAll(newList: MutableList<ItemUrl>)
 
     // Delete an item
     @Delete

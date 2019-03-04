@@ -26,23 +26,23 @@ class UrlsLocalRepository(
     /**
      *  update list of itemUrls in the database
      */
-    fun updateAll(itemUrlsList: List<ItemUrl>, updateFinished: () -> Unit) {
+    fun updateAll(itemUrlsList: MutableList<ItemUrl>, updateFinished: () -> Unit) {
         executor.execute {
             urlsDao.updateAll(itemUrlsList)
             updateFinished()
         }
     }
 
-    private fun getAllItems(daoFunction: () -> List<ItemUrl>): List<ItemUrl>{
-        var list: List<ItemUrl> = listOf()
+    private fun getAllItems(daoFunction: () -> MutableList<ItemUrl>): MutableList<ItemUrl>{
+        var list: MutableList<ItemUrl> = mutableListOf()
         executor.execute {
             list = daoFunction()
         }
         return list
     }
 
-    private fun getAllAsLiveData(daoFunction: () ->LiveData<List<ItemUrl>>): LiveData<List<ItemUrl>>{
-        var list: LiveData<List<ItemUrl>> = MutableLiveData<List<ItemUrl>>()
+    private fun getAllAsLiveData(daoFunction: () ->LiveData<MutableList<ItemUrl>>): LiveData<MutableList<ItemUrl>>{
+        var list: LiveData<MutableList<ItemUrl>> = MutableLiveData<MutableList<ItemUrl>>()
         executor.execute {
             list = daoFunction()
         }
@@ -53,42 +53,42 @@ class UrlsLocalRepository(
     /**
      *  get all items from the database as List<ItemUrl>
      */
-    fun getList(): List<ItemUrl> = getAllItems { urlsDao.getList() }
+    fun getList(): MutableList<ItemUrl> = getAllItems { urlsDao.getList() }
 
     /**
      *  get all items from the database as LiveData<List<ItemUrl>>
      */
-    fun getAll(): LiveData<List<ItemUrl>> = getAllAsLiveData { urlsDao.getAll() }
+    fun getAll(): LiveData<MutableList<ItemUrl>> = getAllAsLiveData { urlsDao.getAll() }
 
     /**
      *  get all items from the database as LiveData<List<ItemUrl>> ordered by availability
      */
-    fun getAllByAvailability(): LiveData<List<ItemUrl>> = getAllAsLiveData { urlsDao.loadAllByAvailability() }
+    fun getAllByAvailability(): LiveData<MutableList<ItemUrl>> = getAllAsLiveData { urlsDao.loadAllByAvailability() }
 
     /**
      *  get all items from the database as LiveData<List<ItemUrl>> ordered by name ascending
      */
-    fun getByNameAsc(): LiveData<List<ItemUrl>> = getAllAsLiveData { urlsDao.loadAllByNameAsc() }
+    fun getByNameAsc(): LiveData<MutableList<ItemUrl>> = getAllAsLiveData { urlsDao.loadAllByNameAsc() }
 
     /**
      *  get all items from the database as LiveData<List<ItemUrl>> ordered by name descending
      */
-    fun getByNameDesc(): LiveData<List<ItemUrl>> = getAllAsLiveData { urlsDao.loadAllByNameDesc() }
+    fun getByNameDesc(): LiveData<MutableList<ItemUrl>> = getAllAsLiveData { urlsDao.loadAllByNameDesc() }
 
     /**
      *  get all items from the database as LiveData<List<ItemUrl>> ordered by response time ascending
      */
-    fun getByResponseTimeAsc(): LiveData<List<ItemUrl>> = getAllAsLiveData { urlsDao.loadAllByResponseTimeAsc() }
+    fun getByResponseTimeAsc(): LiveData<MutableList<ItemUrl>> = getAllAsLiveData { urlsDao.loadAllByResponseTimeAsc() }
 
     /**
      *  get all items from the database as LiveData<List<ItemUrl>> ordered by response time descending
      */
-    fun getByResponseTimeDesc(): LiveData<List<ItemUrl>> = getAllAsLiveData { urlsDao.loadAllByResponseTimeDesc() }
+    fun getByResponseTimeDesc(): LiveData<MutableList<ItemUrl>> = getAllAsLiveData { urlsDao.loadAllByResponseTimeDesc() }
 
     /**
      *  get search result from the database by name as List<ItemUrl>
      */
-    fun findByName(urlName: String): List<ItemUrl> = getAllItems { urlsDao.findByName(urlName) }
+    fun findByName(urlName: String): MutableList<ItemUrl> = getAllItems { urlsDao.findByName(urlName) }
 
     /**
      *  delete item's data from the database

@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setRecyclerView() {
-        viewModel.urlsList.observe(this, Observer<List<ItemUrl>> {
+        viewModel.urlsList.observe(this, Observer<MutableList<ItemUrl>> {
             showEmptyList(it?.size == 0)
             run {
                 urlsAdapter.setList(it!!)

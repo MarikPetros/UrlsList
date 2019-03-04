@@ -13,7 +13,7 @@ import java.util.concurrent.Executors
 object UrlsRemoteRepository {
     private val service: UrlAvailabilityService = UrlAvailabilityService.create()
     private val executor = Executors.newCachedThreadPool()
-    private lateinit var newList: LiveData<List<ItemUrl>>
+    private lateinit var newList: LiveData<MutableList<ItemUrl>>
 
     /**
      *  Function for the single URL request
@@ -34,7 +34,7 @@ object UrlsRemoteRepository {
     /**
      *  Function to handle requests for the list of URLs
      */
-    fun checkUrlsList(list: List<ItemUrl>): List<ItemUrl> {
+    fun checkUrlsList(list: MutableList<ItemUrl>): MutableList<ItemUrl> {
         executor.submit {
             list.forEach { itemUrl: ItemUrl -> checkSingleUrl(itemUrl) }
         }

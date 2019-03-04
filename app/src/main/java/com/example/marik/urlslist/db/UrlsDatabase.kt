@@ -8,7 +8,7 @@ import android.content.Context
 import com.example.marik.urlslist.model.ItemUrl
 import com.example.marik.urlslist.model.UrlsDao
 
-@Database(entities = [ItemUrl::class], version = 3, exportSchema = false)
+@Database(entities = [ItemUrl::class], version = 4, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class UrlsDatabase : RoomDatabase() {
 

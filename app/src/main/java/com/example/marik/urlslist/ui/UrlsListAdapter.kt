@@ -9,7 +9,7 @@ import com.example.marik.urlslist.model.ItemUrl
  *  Adapter for urls list
  */
 class UrlsListAdapter : RecyclerView.Adapter<UrlViewHolder>() {
-    private var items: List<ItemUrl> = listOf()
+    private var items: MutableList<ItemUrl> = mutableListOf()
 
     lateinit var mOnItemDeleteListener: OnItemDeleteListener
 
@@ -33,7 +33,7 @@ class UrlsListAdapter : RecyclerView.Adapter<UrlViewHolder>() {
         return holder
     }
 
-    fun setList(list: List<ItemUrl>) {
+    fun setList(list: MutableList<ItemUrl>) {
         items = list
     }
 

@@ -42,7 +42,7 @@ class UrlsRepository(
     fun refreshAll() {
         if (netManager.isConnectedToInternet) {
             if (isRequestInProgress) {
-                val oldList: List<ItemUrl> = localDataSource.getList()
+                val oldList: MutableList<ItemUrl> = localDataSource.getList()
                 localDataSource.updateAll(oldList.apply { forEach { item: ItemUrl -> item.isAvailable = null } })
                 { Toast.makeText(context, "Request for URLs list is in progress!", Toast.LENGTH_LONG).show() }
                 return
@@ -57,21 +57,21 @@ class UrlsRepository(
     /**
      *  Function for searching the list for URl
      */
-    fun searchUrl(string: String): List<ItemUrl> = localDataSource.findByName(string)
+    fun searchUrl(string: String): MutableList<ItemUrl> = localDataSource.findByName(string)
 
     //Function for getting the list of all items
-    fun getAll(): LiveData<List<ItemUrl>> = localDataSource.getAll()
+    fun getAll(): LiveData<MutableList<ItemUrl>> = localDataSource.getAll()
 
     // Functions for getting all items ordered by some criteria
-    fun getAllByAvailability(): LiveData<List<ItemUrl>> = localDataSource.getAllByAvailability()
+    fun getAllByAvailability(): LiveData<MutableList<ItemUrl>> = localDataSource.getAllByAvailability()
 
-    fun getByNameAsc(): LiveData<List<ItemUrl>> = localDataSource.getByNameAsc()
+    fun getByNameAsc(): LiveData<MutableList<ItemUrl>> = localDataSource.getByNameAsc()
 
-    fun getByNameDesc(): LiveData<List<ItemUrl>> = localDataSource.getByNameDesc()
+    fun getByNameDesc(): LiveData<MutableList<ItemUrl>> = localDataSource.getByNameDesc()
 
-    fun getByResponseTimeAsc(): LiveData<List<ItemUrl>> = localDataSource.getByResponseTimeAsc()
+    fun getByResponseTimeAsc(): LiveData<MutableList<ItemUrl>> = localDataSource.getByResponseTimeAsc()
 
-    fun getByResponseTimeDesc(): LiveData<List<ItemUrl>> = localDataSource.getByResponseTimeDesc()
+    fun getByResponseTimeDesc(): LiveData<MutableList<ItemUrl>> = localDataSource.getByResponseTimeDesc()
 
     // Delete item
     fun deleteItem(itemUrl: ItemUrl) {
