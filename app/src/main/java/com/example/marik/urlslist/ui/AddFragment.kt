@@ -52,9 +52,8 @@ class AddFragment : BottomSheetDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel =
-            ViewModelProviders.of(this, Injector.provideViewModelFactory(requireContext())).get(
-                UrlsListViewModel::class.java
-            )
+            ViewModelProviders.of(this, Injector.provideViewModelFactory(activity!!.applicationContext)).get(
+                UrlsListViewModel::class.java )
     }
 
     // add url and dismiss

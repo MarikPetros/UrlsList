@@ -29,11 +29,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.activity_main, null, false)
-        setContentView(binding.root)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.executePendingBindings()
 
-        viewModel = ViewModelProviders.of(this, Injector.provideViewModelFactory(this))
+        viewModel = ViewModelProviders.of(this, Injector.provideViewModelFactory(this.applicationContext))
             .get(UrlsListViewModel::class.java)
         binding.viewModel = viewModel
 
